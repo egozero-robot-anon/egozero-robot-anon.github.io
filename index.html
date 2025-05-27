@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="We present EgoZero, a minimal system that trains zero-shot robot policies on in-the-wild egocentric human data without any robot data">   
+  <meta name="keywords" content="Imitation Learning, Robot Learning, Human Data"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EgoZero</title>
+
+
+  <!-- For Google Analytical. It's optional! -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id="></script> -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', ''); // Optional: Fill id to ''.
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/custom.css">
+  <link rel="icon" href="./static/images/favicon.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="static/js/full_screen_video.js"></script>
+  <script src="static/js/auto_resize_first_page_text.js"></script>
+  <script src="static/js/open_in_new_tab.js"></script>
+</head>
+<body>
+
+
+  
+<nav class="navbar" role="navigation" aria-label="main navigation">
+</nav>
+<!-- Paper Info Section -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <!-- Title -->
+          <h1 class="title is-1 publication-title">
+            <span style="font-weight:bold">EgoZero:</span>
+            <br>
+            <span style="font-weight:bold">Robot Learning from Smart Glasses</span>
+          </h1>
+
+          <!-- Conference -->
+          <!-- <h2 class="title is-4">
+            <a href="https://corl2025.org" class="conference"><span style="color:#ff9d0b"> 
+              Conference on Robot Learning (<span class="grad_text">CoRL</span>) 2025</span>
+            </a>
+          </h2> -->
+
+          <!-- Authors -->
+          <div class="is-size-5 publication-authors">
+            <span class="author-block" style="margin-right: 1rem;">Anonymous Author(s)</span>
+            <!-- <span class="author-block" style="margin-right: 1rem;"><a href="https://vliu15.github.io/" style="color: #2980b9 !important;">Vincent Liu<sup>*1</sup></a></span>
+            <span class="author-block" style="margin-right: 1rem;"><a href="https://ademiadeniji.github.io/" style="color: #2980b9 !important;">Ademi Adeniji<sup>*12</sup></a></span>
+            <span class="author-block" style="margin-right: 1rem;"><a href="linkedin.com/in/david-zhan-96935126a" style="color: #2980b9 !important;">Haotian Zhan<sup>*1</sup></a></span>
+            <span class="author-block"><a href="https://raunaqbhirangi.github.io/" style="color: #2980b9 !important;">Raunaq Bhirangi<sup>1</sup></a></span>
+            <br>
+            <span class="author-block" style="margin-right: 1rem;"><a href="https://people.eecs.berkeley.edu/~pabbeel/" style="color: #2980b9 !important;">Pieter Abbeel<sup>2</sup></a></span>
+            <span class="author-block"><a href="https://lerrelpinto.com/" style="color: #2980b9 !important;">Lerrel Pinto<sup>1</sup></a></span> -->
+          </div>
+          <br>
+          <!-- <div class="is-size-5 publication-authors">
+            <span class="author-block" style="margin-right: 1rem;"><sup>1</sup>New York University</span>
+            <span class="author-block"><sup>2</sup>UC Berkeley</span>
+            <br>
+            <span class="author-block"><sup>*</sup>Equal Contribution</span>
+            <!-- <span><sup>&dagger;</sup>Corresponding Author</span> -->
+          </div> -->
+
+
+          <!-- Buttons -->
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- Paper PDF -->
+              <span class="link-block">
+                <a class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper</span>
+                </a>
+              </span>
+
+              <!-- arXiv -->
+              <span class="link-block">
+                <a class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+
+              <!-- Video -->
+              <span class="link-block">
+                <a class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-youtube"></i></span>
+                  <span>Video</span>
+                </a>
+              </span>
+
+              <!-- Code -->
+              <span class="link-block">
+                <a href="https://github.com/vliu15/egozero"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- TODO: Teaser -->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video class="large-video" autoplay controls muted loop playsinline height="100%">
+        <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+      </video>
+      <!-- If it is image
+        <img id="teaser" height="100%" src="/path/to/image">
+      -->
+      <!-- <h2 class="subtitle has-text-centered" style="margin-top: 1em">
+        We present, EgoZero, a minimal system that trains zero-shot robot policies on in-the-wild egocentric human data without any robot data
+      </h2>       -->
+    </div>
+  </div>
+</section>
+
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+       <!-- Abstract -->
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Despite recent progress in general purpose robotics, robot policies still lag far behind basic human capabilities in the real world. Humans constantly interact with the physical world, yet this rich data resource remains largely untapped in robot learning. <strong>We propose EgoZero, a minimal system that learns robust manipulation policies from human demonstrations captured with Project Aria smart glasses, and zero robot data.</strong> EgoZero enables: (1) extraction of complete, robot-executable actions from in-the-wild, egocentric, human demonstrations, (2) compression of human visual observations into morphology-agnostic state representations, and (3) closed-loop policy learning that generalizes morphologically, spatially, and semantically. We deploy EgoZero policies on a gripper Franka Panda robot and demonstrate zero-shot transfer with 70% success rate over 7 manipulation tasks and only 20 minutes of data collection per task. Our results suggest that in-the-wild human data can serve as a scalable foundation for real-world robot learning — paving the way toward a future of abundant, diverse, and naturalistic training data for robots.
+          </p>
+        </div>
+
+        <!-- /Abstract -->
+      </div>
+    </div>
+
+
+    <!-- TODO: Paper video. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Summary Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+<!-- Overview. -->
+<section class="section">  
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Overview</h2>
+        <div class="is-vcentered">
+          <img src="./static/images/architecture.png"
+                alt="Aria Architecture">
+        </div>
+        <div class="content has-text-justified">
+          <p>
+            <strong>EgoZero</strong> trains policies in a unified state-action space defined as egocentric 3D points. Unlike previous methods which leverage multi-camera calibration and depth sensors, EgoZero localizes object points via triangulation over the camera trajectory, and computes action points via Aria MPS hand pose and a hand estimation model. These points supervise a closed-loop Transformer policy, which is rolled out on unprojected points from an iPhone during inference.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--/ Overview. -->
+<!-- Method -->
+<!-- <section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Method</h2>
+    Tactile Data Collection
+    <div class="content">
+      <h3 class="title is-4">1. Tactile Data Collection</h3>
+      <img src="./static/images/glove_setup.png" alt="Tactile Data Collection">
+      <p>
+        We design a custom, low-cost tactile glove inspired by AnySkin to capture 3D contact forces during natural human manipulation.
+        The glove streams high-frequency force data, synchronized with stereo camera views capturing hand and object interactions.
+        A tactile sensor is mounted on the robot's gripper to replicate the force sensing.
+      </p>
+      <details>
+        <summary>More details</summary>
+        <p>
+          The tactile glove places magnetometer-based sensors on the underside of the thumb to minimize occlusion.
+          The sensor data is sampled at 200Hz and downsampled to align with 30Hz visual frames. The resulting force readings are used to supervise a policy trained entirely on human demonstrations, without requiring robot data.
+        </p>
+      </details>
+    </div>
+
+</section> -->
+<!--/ Method -->
+
+
+<!-- Experiments -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Experiments</h2>
+
+    <!-- FTF Performance with Toggle Videos -->
+    <div class="content">
+      <h3 class="title is-4">Task Rollouts</h3>
+      <div class="tabs is-centered is-boxed" id="aria-video-tabs">
+        <ul>
+          <li class="is-active" data-target="video-oven"><a>Open oven door</a></li>
+          <li data-target="video-bread"><a>Put bread in plate</a></li>
+          <li data-target="video-board"><a>Erase board</a></li>
+          <li data-target="video-fruit"><a>Sort fruit in bowl</a></li>
+          <li data-target="video-towel"><a>Fold towel</a></li>
+          <li data-target="video-insert"><a>Insert book in shelf</a></li>
+        </ul>
+      </div>
+
+      <div id="aria-video-display">
+          <div class="video-content is-active" id="video-oven">
+            <p class="subtitle is-6">Human Demonstration</p>
+            <div class="columns is-vcentered">
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/open_oven_human_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/open_oven_human_2.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/open_oven_human_3.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+            <p class="subtitle is-6">Robot Inference</p>
+            <div class="columns is-vcentered">
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/open_oven_robot_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/open_oven_robot_2.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/open_oven_robot_3.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-content" id="video-bread">
+            <p class="subtitle is-6">Human Demonstration</p>
+            <div class="columns is-vcentered">
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/pick_bread_human_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/pick_bread_human_2.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/pick_bread_human_3.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+            <p class="subtitle is-6">Robot Inference</p>
+            <div class="columns is-vcentered">
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/pick_bread_robot_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/pick_bread_robot_2.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/pick_bread_robot_3.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-content" id="video-board">
+            <p class="subtitle is-6">Human Demonstration</p>
+            <div class="columns is-vcentered">
+              <div class="column has-text-centered">
+                <video class="fixed-video" controls autoplay muted loop playsinline>
+                  <source src="./static/videos/erase_board_human_1.mp4" type="video/mp4">
+                </video> 
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/erase_board_human_2.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video class="fixed-video" controls autoplay muted loop playsinline>
+                  <source src="./static/videos/erase_board_human_3.mp4" type="video/mp4">
+                </video> 
+              </div>
+            </div>
+            <p class="subtitle is-6">Robot Inference</p>
+            <div class="columns is-vcentered">
+              <div class="column has-text-centered">
+                <video class="fixed-video" controls autoplay muted loop playsinline>
+                  <source src="./static/videos/erase_board_robot_1.mp4" type="video/mp4">
+                </video> 
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/erase_board_robot_2.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video class="fixed-video" controls autoplay muted loop playsinline>
+                  <source src="./static/videos/erase_board_robot_3.mp4" type="video/mp4">
+                </video> 
+              </div>
+            </div>
+          </div>
+
+          <div class="video-content" id="video-fruit">
+            <p class="subtitle is-6">Human Demonstration</p>
+            <div class="columns is-vcentered">
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/sort_fruit_human_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/sort_fruit_human_2.mp4" type="video/mp4">
+                </video>  
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/sort_fruit_human_3.mp4" type="video/mp4">
+                </video>  
+              </div>
+            </div>
+            <p class="subtitle is-6">Robot Inference</p>
+            <div class="columns is-vcentered">
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/sort_fruit_robot_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/sort_fruit_robot_2.mp4" type="video/mp4">
+                </video>  
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/sort_fruit_robot_3.mp4" type="video/mp4">
+                </video>  
+              </div>
+            </div>
+          </div>
+
+          <div class="video-content" id="video-towel">
+            <p class="subtitle is-6">Human Demonstration</p>
+            <div class="columns is-vcentered">
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/fold_towel_human_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/fold_towel_human_2.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/fold_towel_human_3.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+            <p class="subtitle is-6">Robot Inference</p>
+            <div class="columns is-vcentered">
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/fold_towel_robot_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/fold_towel_robot_2.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/fold_towel_robot_3.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-content" id="video-insert">
+            <p class="subtitle is-6">Human Demonstration</p>
+            <div class="columns is-vcentered">
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/put_book_human_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/put_book_human_2.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/put_book_human_3.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+            <p class="subtitle is-6">Robot Inference</p>
+            <div class="columns is-vcentered">
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/put_book_robot_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/put_book_robot_2.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/put_book_robot_3.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+
+      </div>
+    </div>
+
+    <!-- Comparison to Baselines -->
+    <div class="content">
+      <h3 class="title is-4" style="margin-top: 3rem; margin-bottom: 1.5rem;">Baselines and Ablations</h3>
+
+      <div class="columns is-centered">
+        <div class="column is-fullwidth">
+          <div class="table-container">
+            <table class="table is-fullwidth">
+              <tbody>
+                <tr>
+                  <th class="border-right"></th>
+                  <th class="has-text-centered">Open oven</th>
+                  <th class="has-text-centered">Pick bread</th>
+                  <th class="has-text-centered">Sweep broom</th>
+                  <th class="has-text-centered">Erase board</th>
+                  <th class="has-text-centered">Sort fruit</th>
+                  <th class="has-text-centered">Fold towel</th>
+                  <th class="has-text-centered border-right">Insert book</th>
+                </tr>
+
+                <tr class="tr-thick-top">
+                  <th class="border-right">From vision</th>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered border-right">0/15</td>
+                </tr>
+
+                <tr>
+                  <th class="border-right">From affordances</th>
+                  <td class="has-text-centered">11/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">7/15</td>
+                  <td class="has-text-centered">10/15</td>
+                  <td class="has-text-centered border-right">5/15</td>
+                </tr>
+
+                <tr class="tr-thick-top">
+                  <th class="border-right">EgoZero – 3D augmentations</th>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered border-right">0/15</td>
+                </tr>
+
+                <tr>
+                  <th class="border-right">EgoZero – triangulated depth</th>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">11/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered">0/15</td>
+                  <td class="has-text-centered border-right">0/15</td>
+                </tr>
+
+                <tr class="tr-thick-top">
+                  <th class="border-right"><b>EgoZero</b></th>
+                  <td class="has-text-centered"><b>13/15</b></td>
+                  <td class="has-text-centered"><b>11/15</b></td>
+                  <td class="has-text-centered"><b>9/15</b></td>
+                  <td class="has-text-centered"><b>11/15</b></td>
+                  <td class="has-text-centered"><b>10/15</b></td>
+                  <td class="has-text-centered"><b>10/15</b></td>
+                  <td class="has-text-centered border-right"><b>9/15</b></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <p>Success rates for all baselines and ablations. All models were trained on the same 100 demonstrations per task, and evaluated on zero-shot object poses (unseen from training), cameras (iPhone vs Aria), and environment (robot workspace vs in-the-wild). Because of limited prior work in our exact zero-shot in-the-wild setting, we cite the closest work for each baseline.</p>
+
+    </div>
+
+    <!-- FTF Performance with Toggle Videos -->
+    <div class="content">
+      <h3 class="title is-4">Zero-Shot Object Generalization</h3>
+      <div class="tabs is-centered is-boxed" id="aria-video-tabs">
+        <ul>
+          <li class="is-active" data-target="video-oven-generalization"><a>Open oven door</a></li>
+          <li data-target="video-bread-generalization"><a>Put bread in plate</a></li>
+          <li data-target="video-board-generalization"><a>Erase board</a></li>
+          <li data-target="video-towel-generalization"><a>Fold towel</a></li>
+        </ul>
+      </div>
+
+      <div id="aria-video-display-2">
+          <div class="video-content is-active" id="video-oven-generalization">
+              <!-- Rollout 1 -->
+            <!-- <h4 class="title is-5 has-text-centered" style="margin: 0.0001rem 0;">Rollout 1</h4> -->
+            <div class="columns is-vcentered">
+              <div class="column has-text-centered">
+                <p class="subtitle is-6">Human Demonstration</p>
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/open_oven_human_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <p class="subtitle is-6">Training Object</p>
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/open_oven_robot_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <p class="subtitle is-6">Zero-Shot New Object</p>
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/open_oven_robot_generalization.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-content" id="video-bread-generalization">
+              <!-- Rollout 1 -->
+            <!-- <h4 class="title is-5 has-text-centered" style="margin: 0.0001rem 0;">Rollout 1</h4> -->
+            <div class="columns is-vcentered">
+              <div class="column has-text-centered">
+                <p class="subtitle is-6">Human Demonstration</p>
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/pick_bread_human_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <p class="subtitle is-6">Training Object</p>
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/pick_bread_robot_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <p class="subtitle is-6">Zero-Shot New Object</p>
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/pick_bread_robot_generalization.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-content" id="video-board-generalization">
+              <!-- Rollout 1 -->
+            <!-- <h4 class="title is-5 has-text-centered" style="margin: 0.0001rem 0;">Rollout 1</h4> -->
+            <div class="columns is-vcentered">
+              <div class="column has-text-centered">
+                <p class="subtitle is-6">Human Demonstration</p>
+                <video class="fixed-video" controls autoplay muted loop playsinline>
+                  <source src="./static/videos/erase_board_human_1.mp4" type="video/mp4">
+                </video> 
+              </div>
+              <div class="column has-text-centered">
+                <p class="subtitle is-6">Training Object</p>
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/erase_board_robot_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <p class="subtitle is-6">Zero-Shot New Object</p>
+                <video class="fixed-video" controls autoplay muted loop playsinline>
+                  <source src="./static/videos/erase_board_robot_generalization.mp4" type="video/mp4">
+                </video> 
+              </div>
+            </div>
+          </div>
+
+          <div class="video-content" id="video-towel-generalization">
+              <!-- Rollout 1 -->
+            <!-- <h4 class="title is-5 has-text-centered" style="margin: 0.0001rem 0;">Rollout 1</h4> -->
+            <div class="columns is-vcentered">
+              <div class="column has-text-centered">
+                <p class="subtitle is-6">Human Demonstration</p>
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/fold_towel_human_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <p class="subtitle is-6">Training Object</p>
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/fold_towel_robot_1.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column has-text-centered">
+                <p class="subtitle is-6">Zero-Shot New Object</p>
+                <video controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/fold_towel_robot_generalization.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
+
+<!-- TODO: BibTex -->
+<!-- <section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{liu2025egozerorobotlearning,
+  title         = {EgoZero: Robot Learning from Smart Glasses},
+  author        = {Vincent Liu and Ademi Adeniji and Haotian Zhan and Raunaq Bhirangi and Pieter Abbeel and Lerrel Pinto},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.RO},
+  year          = {2025}
+}</code></pre>
+  </div>
+</section> -->
+
+
+<!-- <footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is modified from <a
+              href="https://github.com/nerfies/nerfies.github.io">Nerfies Template</a>.
+            Some website materials are adapted from <a
+              href="https://transic-robot.github.io/">T<span style="font-variant-caps:all-small-caps;">RANSIC</span></a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer> -->
+
+</body>
+
+</html>

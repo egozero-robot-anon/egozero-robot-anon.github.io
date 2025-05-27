@@ -1,0 +1,104 @@
+/* Custom styles to create a full-page image */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.full-page-image {
+    background-image: url('../images/full_screen.png');
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.overlay {
+    /* Add a semi-transparent overlay to the image if needed */
+    background-color: rgba(0, 0, 0, 0.0);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+}
+
+.first-page-title {
+    /* Center your content vertically and horizontally */
+    position:absolute;
+    transform: translateX(5%);
+    top: 5%;
+    right: 25;
+    /* transform: translate(-50%, -50%); */
+    z-index: 3;
+    color: #fff; /* Set the color for your content */
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 1em;
+    text-align: center;
+}
+
+.first-page-video-speed {
+    /* Center your content vertically and horizontally */
+    position: absolute;
+    bottom: 5%;
+    right: 0%;
+    /* right: 25; */
+    /* transform: translate(-50%, -50%); */
+    z-index: 3;
+    color: #fff; /* Set the color for your content */
+    background-color: rgba(0, 0, 0, .4);
+    opacity: 0;
+    transition: opacity 1.0s ease;
+    font-size: 14px; 
+}
+
+#bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.0s ease;
+}
+
+.large-video {
+    border-radius: 30px;
+}
+
+.medium-video {
+    border-radius: 15px;
+}
+
+.small-video {
+    border-radius: 10px;
+}
+
+#teaser-carousel {
+    overflow: hidden;
+}
+
+th.no-border-bottom {
+    border-bottom: none;
+}
+
+td.no-border-bottom {
+    border-bottom: none;
+}
+
+th.border-right {
+    border-right: 1px solid #dbdbdb;
+}
+
+td.border-right {
+    border-right: 1px solid #dbdbdb;
+}
+
+.chart-img {
+    width: 100%;
+    max-width: 650px;
+}
